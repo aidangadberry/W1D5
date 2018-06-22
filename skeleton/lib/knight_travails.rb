@@ -7,10 +7,6 @@ class KnightPathFinder
     @visited_positions = [start_pos]
   end
 
-  def find_path(end_pos)
-
-  end
-
   def self.valid_moves(pos)
     relative_pos = [[-1,2], [1,2], [2,1], [2,-1]]
     valid_moves = relative_pos
@@ -31,7 +27,7 @@ class KnightPathFinder
     new_positions = possible_moves.reject do |move|
       @visited_positions.include?(move)
     end
-    
+
     @visited_positions += new_positions
     new_positions
   end
@@ -52,6 +48,26 @@ class KnightPathFinder
     end
 
     root
+  end
+
+
+  def find_path(end_pos)
+    root = build_move_tree
+
+    end_node = root.dfs(end_pos)
+    trace_path_back(end_node)
+  end
+
+  def trace_path_back(end_node)
+    path = []
+    current_node = end_node
+
+    until current_node.nil?
+      path.unshift(current_node.value)
+      current_node = current_node.parent
+    end
+
+    path
   end
 
 end
